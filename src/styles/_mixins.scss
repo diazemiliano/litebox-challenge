@@ -1,0 +1,10 @@
+@mixin fontFamily($name: "", $weight: 400) {
+  font-family: $name;
+  font-style: normal;
+  font-weight: $weight;
+  font-display: swap;
+}
+
+@mixin bebasNeueFont($weight: 400) {
+  @include fontFamily("Bebas Neue", $weight);
+}
