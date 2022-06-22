@@ -37,19 +37,16 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   [CALL_POST_FAVOURITES]: function (
     { commit, state },
-    {
-      favourite = null,
-      // eslint-disable-next-line no-unused-vars
-      progressCb = ({ bytes, total }) =>
-        console.warn(
-          `"${FAVOURITE_CONTENT_STORE} > ${CALL_POST_FAVOURITES} > progressCb" not defined`
-        ),
-    } = {}
+    { favourite = null, progressCb = () => {} } = {}
   ) {
     if (!favourite) Promise.reject("No favourite to save");
     return new Promise((resolve, reject) => {
-      return Apis.FavouritesApi.postFile({ file: favourite.file })
-        .then(({ ref }) => {
+      return Apis.FavouritesApi.postFile({
+        file: favourite.file,
+        progressCb,
+      })
+        .then((response) => {
+          const { ref } = response;
           progressCb({ bytes: 75, total: favourite.file.size });
           return ApiConstructor.storage.getDownloadURL(ref).then((poster) =>
             Apis.FavouritesApi.postFavourite({

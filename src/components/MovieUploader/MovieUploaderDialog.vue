@@ -136,19 +136,26 @@ const statusEnum = Object.freeze({
 export default {
   name: "MovieUploaderDialog",
   components: { UploaderDropZone },
-  data: () => ({
-    show: false,
-    status: statusEnum.empty,
-    progress: 50,
-    movie: {
-      title: "",
-      file: null,
-    },
-  }),
+  data() {
+    return {
+      show: false,
+      status: statusEnum.empty,
+      progress: 50,
+      movie: {
+        title: "",
+        file: null,
+      },
+    };
+  },
   statusEnum,
   computed: {
     isValid() {
       return this.movie.title && this.movie.file;
+    },
+  },
+  watch: {
+    show(val) {
+      this.$emit("input", val);
     },
   },
   methods: {
@@ -181,8 +188,8 @@ export default {
           });
       }
     },
-    handleUploadProgress({ bytes, total }) {
-      this.progress = Math.ceil(total / bytes);
+    handleUploadProgress(progress) {
+      this.progress = progress;
     },
     handleDropZoneInput({ allowedFiles }) {
       this.movie.file = allowedFiles[0];
