@@ -6,6 +6,7 @@
   >
     <main-navigation-drawer />
     <main-top-navigation />
+    <movie-uploader-dialog />
     <v-main>
       <router-view />
     </v-main>
@@ -25,10 +26,11 @@ import {
   GET_FEATURED,
 } from "@/components/FeaturedContent/FeaturedContentStore";
 import MainNavigationDrawer from "@/components/MainNavigationDrawer";
+import MovieUploaderDialog from "@/components/MovieUploader/MovieUploaderDialog";
 
 export default {
   name: "App",
-  components: { MainNavigationDrawer, MainTopNavigation },
+  components: { MovieUploaderDialog, MainNavigationDrawer, MainTopNavigation },
   computed: {
     ...mapGetters(FEATURED_CONTENT_STORE, { featured: GET_FEATURED }),
     appStyles() {

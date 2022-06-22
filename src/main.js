@@ -19,6 +19,35 @@ import FavouriteContentStore, {
 
 Vue.config.productionTip = false;
 
+// Import the functions you need from the SDKs you need
+import { initializeApp } from "firebase/app";
+// import { getFirestore } from "firebase/firestore";
+// eslint-disable-next-line no-unused-vars
+import { getStorage, ref, uploadBytes } from "firebase/storage";
+
+// Your web app's Firebase configuration
+const firebaseConfig = {
+  apiKey: "AIzaSyA930w0GHlujALPXg3Fnhvd0n6yPEHeelw",
+  authDomain: "striped-bastion-354012.firebaseapp.com",
+  projectId: "striped-bastion-354012",
+  storageBucket: "striped-bastion-354012.appspot.com",
+  messagingSenderId: "712725761829",
+  appId: "1:712725761829:web:22932c00f23f3840fe14cc",
+};
+
+// Initialize Firebase
+const firebaseApp = initializeApp(firebaseConfig);
+// const firebaseStore = getFirestore(firebaseApp);
+const firebaseStorage = getStorage(firebaseApp);
+
+const storageRef = ref(firebaseStorage, "posters/some-child");
+console.log(storageRef);
+
+// 'file' comes from the Blob or File API
+// uploadBytes(storageRef, file).then((snapshot) => {
+//   console.log("Uploaded a blob or file!");
+// });
+
 new Vue({
   router,
   store,

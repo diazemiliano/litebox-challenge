@@ -26,7 +26,12 @@
 
     <template v-if="buttons.includes('add')">
       <div class="d-none d-md-flex align-start">
-        <v-btn text class="header-bar button--text" color="white">
+        <v-btn
+          text
+          class="header-bar button--text"
+          color="white"
+          @click="handleAddMovieClick"
+        >
           <v-img
             :src="require('@/assets/plus-icon.svg')"
             height="15"
@@ -88,9 +93,11 @@
 </template>
 <script>
 import { mapActions, mapGetters } from "vuex";
+import MovieUploaderDialogEventsMixin from "@/components/MovieUploader/MovieUploaderDialogEventsMixin";
 
 export default {
   name: "main-top-navigation",
+  mixins: [MovieUploaderDialogEventsMixin],
   props: {
     buttons: {
       type: Array,
@@ -103,6 +110,9 @@ export default {
   },
   methods: {
     ...mapActions({ handleMenuButtonClick: "showDrawer" }),
+    handleAddMovieClick() {
+      this.emitOpenMovieUploaderDialog();
+    },
   },
 };
 </script>
