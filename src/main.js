@@ -27,7 +27,7 @@ import { getStorage, ref, uploadBytes } from "firebase/storage";
 
 // Your web app's Firebase configuration
 const firebaseConfig = {
-  apiKey: "AIzaSyA930w0GHlujALPXg3Fnhvd0n6yPEHeelw",
+  apiKey: process.env.VUE_APP_FIREBASE_API_KEY || "",
   authDomain: "striped-bastion-354012.firebaseapp.com",
   projectId: "striped-bastion-354012",
   storageBucket: "striped-bastion-354012.appspot.com",
