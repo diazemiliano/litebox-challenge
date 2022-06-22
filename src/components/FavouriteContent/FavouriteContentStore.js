@@ -1,4 +1,5 @@
 import Apis from "@/api";
+import { ApiConstructor } from "@/api/FavouritesApi/constructor";
 
 export const FAVOURITE_CONTENT_STORE = "FavouriteContentStore";
 
@@ -23,33 +24,61 @@ const getters = {
 const actions = {
   [CALL_GET_FAVOURITES]: function ({ commit }) {
     return Apis.FavouritesApi.getFavourites()
-      .then(({ results }) => {
-        const lastPlayed = results[0];
-        commit(MUTATE_FAVOURITES, lastPlayed);
+      .then(({ docs }) => {
+        const favourites = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
+
+        commit(MUTATE_FAVOURITES, favourites);
         return Promise.resolve();
       })
       .catch((e) => {
         return Promise.reject(e);
       });
   },
-  [CALL_POST_FAVOURITES]: function ({ commit }, { favourite = null } = {}) {
+  // eslint-disable-next-line no-unused-vars
+  [CALL_POST_FAVOURITES]: function (
+    { commit, state },
+    {
+      favourite = null,
+      // eslint-disable-next-line no-unused-vars
+      progressCb = ({ bytes, total }) =>
+        console.warn(
+          `"${FAVOURITE_CONTENT_STORE} > ${CALL_POST_FAVOURITES} > progressCb" not defined`
+        ),
+    } = {}
+  ) {
     if (!favourite) Promise.reject("No favourite to save");
+    return new Promise((resolve, reject) => {
+      return Apis.FavouritesApi.postFile({ file: favourite.file })
+        .then(({ ref }) => {
+          progressCb({ bytes: 75, total: favourite.file.size });
+          return ApiConstructor.storage.getDownloadURL(ref).then((poster) =>
+            Apis.FavouritesApi.postFavourite({
+              title: favourite.title,
+              poster,
+            }).then(() => {
+              const newFavourite = {
+                title: favourite.title,
+                poster,
+              };
 
-    return Apis.FavouritesApi.postFavourite({ favourite })
-      .then(({ results }) => {
-        const lastPlayed = results[0];
-        commit(MUTATE_FAVOURITES, lastPlayed);
-        return Promise.resolve();
-      })
-      .catch((e) => {
-        return Promise.reject(e);
-      });
+              commit(MUTATE_FAVOURITES, [...state[FAVOURITES], newFavourite]);
+
+              resolve({
+                movie: newFavourite,
+              });
+            })
+          );
+        })
+        .catch((e) => {
+          reject(e);
+        });
+    });
   },
 };
 
 const mutations = {
-  [MUTATE_FAVOURITES]: function (state, featured) {
-    state[FAVOURITES] = { ...featured };
+  [MUTATE_FAVOURITES]: function (state, favourites) {
+    state[FAVOURITES] = [...favourites];
   },
 };
 

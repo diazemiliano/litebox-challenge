@@ -15,7 +15,7 @@
         :block="$vuetify.breakpoint.xsOnly"
         height="56"
         width="248"
-        class="featured-content__button mb-6 mb-sm-0"
+        class="featured-content__button mb-6 mb-sm-0 mr-sm-6"
       >
         <v-img max-width="14" :src="require('@/assets/play-icon.svg')" />
         <span>Reproducir</span>
@@ -26,7 +26,7 @@
         :block="$vuetify.breakpoint.xsOnly"
         height="56"
         width="248"
-        class="featured-content__button featured-content__button--transparent ml-sm-6"
+        class="featured-content__button featured-content__button--transparent"
       >
         <v-img max-width="15" :src="require('@/assets/plus-icon.svg')" />
         <span>Mi Lista</span>

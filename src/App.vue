@@ -27,6 +27,10 @@ import {
 } from "@/components/FeaturedContent/FeaturedContentStore";
 import MainNavigationDrawer from "@/components/MainNavigationDrawer";
 import MovieUploaderDialog from "@/components/MovieUploader/MovieUploaderDialog";
+import {
+  CALL_GET_FAVOURITES,
+  FAVOURITE_CONTENT_STORE,
+} from "@/components/FavouriteContent/FavouriteContentStore";
 
 export default {
   name: "App",
@@ -64,6 +68,9 @@ export default {
     ...mapActions(POPULAR_CONTENT_STORE, {
       callGetPopular: CALL_GET_POPULAR,
     }),
+    ...mapActions(FAVOURITE_CONTENT_STORE, {
+      callGetFavourites: CALL_GET_FAVOURITES,
+    }),
   },
   created() {
     this.callGetFeatured().catch((e) => {
@@ -74,6 +81,10 @@ export default {
       // Handle the Error at UI Here
       console.log(e);
     });
+    // this.callGetFavourites().catch((e) => {
+    //   // Handle the Error at UI Here
+    //   console.log(e);
+    // });
   },
 };
 </script>

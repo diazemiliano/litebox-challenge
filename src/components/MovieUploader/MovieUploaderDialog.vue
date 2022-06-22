@@ -6,6 +6,7 @@
     transition="dialog-bottom-transition"
     max-width="730"
     content-class="movie-uploader-dialog"
+    :fullscreen="$vuetify.breakpoint.smAndDown"
   >
     <v-card>
       <v-card-title class="justify-end">
@@ -22,31 +23,93 @@
         </v-btn>
       </v-card-title>
 
-      <h2 class="text-center">Agregar Película</h2>
-      <uploader-drop-zone class="ma-5 pa-10 text-center">
-        <img width="16px" :src="require('@/assets/paper-clip-icon.svg')" />
-        <span class="ml-2 font-weight-regular">
-          Agregá un archivo
-          <span class="font-weight-thin"> o arrastralo y soltalo aquí</span>
-        </span>
-      </uploader-drop-zone>
+      <v-card-text class="ma-0 px-5 pt-0">
+        <template v-if="status < $options.statusEnum.uploading">
+          <h2 class="text-center mb-16">Agregar Película</h2>
+          <uploader-drop-zone
+            @input="handleDropZoneInput"
+            class="pa-10 text-center"
+          >
+            <template v-if="status === $options.statusEnum.empty">
+              <img
+                width="16px"
+                :src="require('@/assets/paper-clip-icon.svg')"
+              />
+              <span class="ml-2 font-weight-regular">
+                Agregá un archivo
+                <span class="font-weight-thin">
+                  o arrastralo y soltalo aquí</span
+                >
+              </span>
+            </template>
+            <template v-else-if="status === $options.statusEnum.selected">
+              <span class="ml-2 font-weight-regular">
+                {{ movie.file.name }}
+                <span class="font-weight-thin"> listo para Subir</span>
+              </span>
+            </template>
+          </uploader-drop-zone>
+        </template>
+        <template
+          v-if="
+            [$options.statusEnum.uploading, $options.statusEnum.error].includes(
+              status
+            )
+          "
+        >
+          <template v-if="status === $options.statusEnum.uploading">
+            <p>Cargando: {{ progress }}</p>
+          </template>
+          <template v-if="status === $options.statusEnum.error">
+            <p>¡ERROR! NO SE PUDO CARGAR LA PELÍCULA</p>
+          </template>
 
-      <v-text-field
-        placeholder="Título"
-        class="movie-uploader-dialog__title mx-5"
-      />
+          <v-progress-linear
+            :value="progress"
+            height="10"
+            :color="status < $options.statusEnum.error ? '#64EEBC' : '#FF0000'"
+            background-color="#929292"
+          />
+        </template>
+        <template v-else-if="status === $options.statusEnum.success">
+          <div class="header-bar__logo text-center mb-16">
+            Lite
+            <span class="header-bar__logo--light font-weight-thin">Flix</span>
+          </div>
+
+          <h2 class="mb-7 text-center">¡Felicitaciones!</h2>
+          <p class="mb-7 text-center">
+            Liteflix The Movie fue correctamente subida.
+          </p>
+        </template>
+      </v-card-text>
+
+      <template v-if="status !== $options.statusEnum.success">
+        <v-text-field
+          v-model="movie.title"
+          :disabled="status > $options.statusEnum.selected"
+          placeholder="Título"
+          class="movie-uploader-dialog__title mx-5"
+        />
+      </template>
 
       <v-card-actions class="justify-center">
         <v-btn
           tile
           text
           :block="$vuetify.breakpoint.xsOnly"
+          :disabled="!isValid"
           height="56"
           width="248"
-          @click="closeDialogHandler"
+          @click="handleUploadMovieClick"
           class="movie-uploader-dialog__button mb-4"
         >
-          <span>Subir Película</span>
+          <template v-if="status !== $options.statusEnum.success">
+            <span>Subir Película</span>
+          </template>
+          <template v-if="status === $options.statusEnum.success">
+            <span>Ir al Home</span>
+          </template>
         </v-btn>
       </v-card-actions>
     </v-card>
@@ -56,19 +119,74 @@
 <script>
 import { MovieUploaderEventNames } from "@/components/MovieUploader/MovieUploaderDialogEnums";
 import UploaderDropZone from "@/components/MovieUploader/UploaderDropZone";
+import { mapActions } from "vuex";
+import {
+  CALL_POST_FAVOURITES,
+  FAVOURITE_CONTENT_STORE,
+} from "@/components/FavouriteContent/FavouriteContentStore";
+
+const statusEnum = Object.freeze({
+  empty: 0,
+  selected: 1,
+  uploading: 2,
+  success: 3,
+  error: 4,
+});
 
 export default {
   name: "MovieUploaderDialog",
   components: { UploaderDropZone },
   data: () => ({
     show: false,
+    status: statusEnum.empty,
+    progress: 50,
+    movie: {
+      title: "",
+      file: null,
+    },
   }),
+  statusEnum,
+  computed: {
+    isValid() {
+      return this.movie.title && this.movie.file;
+    },
+  },
   methods: {
+    ...mapActions(FAVOURITE_CONTENT_STORE, {
+      callPostFavourites: CALL_POST_FAVOURITES,
+    }),
     openDialogHandler() {
       this.show = true;
     },
     closeDialogHandler() {
       this.show = false;
+    },
+    handleUploadMovieClick() {
+      if (this.status === this.$options.statusEnum.success) {
+        this.closeDialogHandler();
+        return;
+      }
+
+      if (this.isValid) {
+        this.status = this.$options.statusEnum.uploading;
+        this.callPostFavourites({
+          favourite: this.movie,
+          progressCb: this.handleUploadProgress,
+        })
+          .then(() => {
+            this.status = this.$options.statusEnum.success;
+          })
+          .catch(() => {
+            this.status = this.$options.statusEnum.error;
+          });
+      }
+    },
+    handleUploadProgress({ bytes, total }) {
+      this.progress = Math.ceil(total / bytes);
+    },
+    handleDropZoneInput({ allowedFiles }) {
+      this.movie.file = allowedFiles[0];
+      this.status = this.movie.file ? this.$options.statusEnum.selected : null;
     },
   },
   created() {
@@ -105,7 +223,7 @@ export default {
   }
   &__title {
     input {
-      font-weight: regular;
+      font-weight: 300;
       font-size: 16px;
       line-height: 19px;
       letter-spacing: 4px;
@@ -125,7 +243,12 @@ export default {
   &__button {
     &.v-btn {
       color: $featured-button-bg-color;
-      background-color: $featured-button-secondary-bg-color;
+      background-color: white;
+
+      &.v-btn--disabled {
+        color: $featured-button-bg-color !important;
+        background-color: $featured-button-secondary-bg-color;
+      }
     }
   }
 
@@ -144,6 +267,18 @@ export default {
         border-color: red;
       }
     }
+  }
+
+  .v-progress-linear__background {
+    height: 5px;
+    top: 2.5px;
+  }
+
+  .v-card .v-card__text {
+    font-weight: 400;
+    font-size: 20px;
+    line-height: 24px;
+    letter-spacing: 4px;
   }
 }
 </style>
