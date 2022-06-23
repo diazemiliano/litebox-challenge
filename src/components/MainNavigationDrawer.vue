@@ -44,7 +44,7 @@
           <v-list-item-title>Mi Lista</v-list-item-title>
         </v-list-item>
 
-        <v-list-item class="my-12">
+        <v-list-item class="my-12" @click="handleAddMovieClick">
           <v-list-item-icon class="mr-0">
             <img :src="require('@/assets/plus-icon.svg')" />
           </v-list-item-icon>
@@ -62,9 +62,11 @@
 <script>
 import { mapActions, mapState } from "vuex";
 import MainTopNavigation from "@/components/MainTopNavigation";
+import MovieUploaderDialogEventsMixin from "@/components/MovieUploader/MovieUploaderDialogEventsMixin";
 
 export default {
   name: "MainNavigationDrawer",
+  mixins: [MovieUploaderDialogEventsMixin],
   components: { MainTopNavigation },
   computed: {
     ...mapState(["drawer"]),
@@ -79,6 +81,10 @@ export default {
   },
   methods: {
     ...mapActions(["showDrawer"]),
+    handleAddMovieClick() {
+      this.navigation = false;
+      this.emitOpenMovieUploaderDialog();
+    },
   },
 };
 </script>

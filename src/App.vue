@@ -81,10 +81,10 @@ export default {
       // Handle the Error at UI Here
       console.log(e);
     });
-    // this.callGetFavourites().catch((e) => {
-    //   // Handle the Error at UI Here
-    //   console.log(e);
-    // });
+    this.callGetFavourites().catch((e) => {
+      // Handle the Error at UI Here
+      console.log(e);
+    });
   },
 };
 </script>
