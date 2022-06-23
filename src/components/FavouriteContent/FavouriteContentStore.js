@@ -62,11 +62,12 @@ const actions = {
             Apis.FavouritesApi.postFavourite({
               title: favourite.title,
               poster,
-            }).then(() => {
-              const newFavourite = {
+            }).then(({ id }) => {
+              const newFavourite = new BaseContentModel({
+                id,
                 title: favourite.title,
                 poster,
-              };
+              });
 
               commit(MUTATE_FAVOURITES, [...state[FAVOURITES], newFavourite]);
 

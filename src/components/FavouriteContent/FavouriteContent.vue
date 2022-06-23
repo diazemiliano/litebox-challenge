@@ -4,7 +4,6 @@
       :src="movie.poster"
       :lazy-src="movie.poster"
       class="popular-content-thumb rounded mb-4"
-      min-width="220"
       min-height="146"
       aspect-ratio="1.8"
     >
