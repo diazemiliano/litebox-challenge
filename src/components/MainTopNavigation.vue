@@ -7,6 +7,7 @@
   >
     <template v-if="buttons.includes('logo')">
       <div
+        @click="$router.push('/')"
         class="header-bar__logo d-flex align-start order-1 order-md-0 ma-auto ma-md-0"
       >
         Lite
@@ -153,6 +154,7 @@ export default {
       line-height: 34px;
       font-weight: 700;
       color: $font-primary-color;
+      cursor: pointer;
       &--light {
         line-height: 31px;
       }
