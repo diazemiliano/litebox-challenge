@@ -8,10 +8,9 @@
     <template v-if="buttons.includes('logo')">
       <div
         @click="$route.path !== '/' && $router.push('/')"
-        class="header-bar__logo d-flex align-start order-1 order-md-0 ma-auto ma-md-0"
+        class="header-bar__logo d-inline-block align-end order-1 order-md-0 ma-auto ma-md-0"
       >
-        Lite
-        <span class="header-bar__logo--light font-weight-thin">Flix</span>
+        Lite<span class="header-bar__logo--light font-weight-thin">Flix</span>
       </div>
     </template>
 
@@ -149,15 +148,13 @@ export default {
     }
 
     &__logo {
+      vertical-align: middle;
       letter-spacing: 4px;
       font-size: 34px;
-      line-height: 34px;
+      line-height: 33px;
       font-weight: 700;
       color: $font-primary-color;
       cursor: pointer;
-      &--light {
-        line-height: 32px;
-      }
     }
 
     &.button--text {
