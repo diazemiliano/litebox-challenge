@@ -39,7 +39,7 @@
               />
               <span class="ml-2 font-weight-regular">
                 Agregá un archivo
-                <span class="font-weight-thin">
+                <span class="font-weight-thin hidden-xs-only">
                   o arrastralo y soltalo aquí</span
                 >
               </span>
