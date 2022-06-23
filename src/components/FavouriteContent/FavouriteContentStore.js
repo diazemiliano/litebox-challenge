@@ -48,13 +48,14 @@ const actions = {
   // eslint-disable-next-line no-unused-vars
   [CALL_POST_FAVOURITES]: function (
     { commit, state },
-    { favourite = null, progressCb = () => {} } = {}
+    { favourite = null, progressCb = () => {}, cancelCb = () => {} } = {}
   ) {
     if (!favourite) Promise.reject("No favourite to save");
-    return new Promise((resolve, reject) => {
-      return Apis.FavouritesApi.postFile({
+    return new Promise((resolve, reject) =>
+      Apis.FavouritesApi.postFile({
         file: favourite.file,
         progressCb,
+        cancelCb,
         errorCb: (error) => reject(error),
       })
         .then(({ ref }) => {
@@ -79,8 +80,8 @@ const actions = {
         })
         .catch((e) => {
           reject(e);
-        });
-    });
+        })
+    );
   },
 };
 

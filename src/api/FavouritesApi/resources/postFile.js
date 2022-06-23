@@ -6,10 +6,14 @@ const postPoster = ({
   // eslint-disable-next-line no-unused-vars
   progressCb = (progress) => console.warn(`"progressCb" not defined`),
   // eslint-disable-next-line no-unused-vars
+  cancelCb = (cancel) => console.warn(`"cancelCb" not defined`),
+  // eslint-disable-next-line no-unused-vars
   errorCb = (error) => console.warn(`"errorCb" not defined`),
 }) => {
   const reference = ref(firebaseStorage, `posters/${file.name}`);
   const upload = uploadBytesResumable(reference, file);
+
+  cancelCb({ cancel: () => upload.cancel() });
 
   upload.on(
     "state_changed",

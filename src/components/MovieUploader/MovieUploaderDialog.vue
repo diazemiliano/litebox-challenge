@@ -85,7 +85,10 @@
             class="mb-2"
           />
 
-          <p class="movie-uploader-dialog__action text-right mb-5">
+          <p
+            class="movie-uploader-dialog__action text-right mb-5"
+            @click="handleActionTextClick"
+          >
             {{ uploadActionText }}
           </p>
         </template>
@@ -167,6 +170,7 @@ export default {
         title: "",
         file: null,
       },
+      cancelToken: () => console.warn("cancelToken not set."),
     };
   },
   statusEnum,
@@ -176,11 +180,13 @@ export default {
     },
     uploadActionText() {
       if (this.status === statusEnum.uploading) {
-        return "Cancelar";
+        if (this.progress === 100) {
+          return "Listo!";
+        } else {
+          return "Cancelar";
+        }
       }
-      if (this.status === statusEnum.success) {
-        return "Listo!";
-      }
+
       if (this.status === statusEnum.error) {
         return "Reintentar";
       }
@@ -217,17 +223,30 @@ export default {
         this.callPostFavourites({
           favourite: this.movie,
           progressCb: this.handleUploadProgress,
-        })
-          .then(() => {
-            this.status = this.$options.statusEnum.success;
-          })
-          .catch(() => {
-            this.status = this.$options.statusEnum.error;
-          });
+          cancelCb: this.handleUploadCancel,
+        }).catch((e) => {
+          console.error(e);
+          this.status = this.$options.statusEnum.error;
+        });
       }
     },
     handleUploadProgress(progress) {
       this.progress = progress;
+    },
+    handleUploadCancel({ cancel } = {}) {
+      this.cancelToken = cancel;
+    },
+    handleActionTextClick() {
+      if (this.status === this.$options.statusEnum.uploading) {
+        if (this.progress === 100) {
+          this.status = this.$options.statusEnum.success;
+        } else {
+          this.cancelToken();
+        }
+      } else if (this.status === this.$options.statusEnum.error) {
+        this.status = this.$options.statusEnum.uploading;
+        this.handleUploadMovieClick();
+      }
     },
     handleDropZoneInput({ allowedFiles }) {
       this.movie.file = allowedFiles[0];
