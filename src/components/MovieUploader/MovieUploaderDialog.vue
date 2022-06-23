@@ -17,10 +17,6 @@
           height="27"
           min-width="27"
           max-width="27"
-          :disabled="
-            status >= $options.statusEnum.uploading &&
-            status !== $options.statusEnum.success
-          "
           @click="closeDialogHandler"
         >
           <img width="16px" :src="require('@/assets/x-icon.svg')" />
@@ -201,6 +197,9 @@ export default {
       this.show = true;
     },
     closeDialogHandler() {
+      if (typeof this.cancelToken === "function") {
+        this.cancelToken();
+      }
       this.show = false;
       setTimeout(() => this.resetState(), 300);
     },
