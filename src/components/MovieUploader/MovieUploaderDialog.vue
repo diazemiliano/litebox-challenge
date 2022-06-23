@@ -29,7 +29,9 @@
 
       <v-card-text class="ma-0 px-5 pt-0">
         <template v-if="status < $options.statusEnum.uploading">
-          <h2 class="text-center mb-10">Agregar Película</h2>
+          <h2 class="movie-uploader-dialog__title text-center mb-10">
+            Agregar Película
+          </h2>
           <uploader-drop-zone
             @input="handleDropZoneInput"
             class="pa-10 text-center"
@@ -80,8 +82,12 @@
             height="10"
             :color="status < $options.statusEnum.error ? '#64EEBC' : '#FF0000'"
             background-color="#929292"
-            class="mb-12"
+            class="mb-2"
           />
+
+          <p class="movie-uploader-dialog__action text-right mb-5">
+            {{ uploadActionText }}
+          </p>
         </template>
         <template v-else-if="status === $options.statusEnum.success">
           <div class="header-bar__logo text-center mb-16">
@@ -168,6 +174,18 @@ export default {
     isValid() {
       return this.movie.title && !!this.movie.file;
     },
+    uploadActionText() {
+      if (this.status === statusEnum.uploading) {
+        return "Cancelar";
+      }
+      if (this.status === statusEnum.success) {
+        return "Listo!";
+      }
+      if (this.status === statusEnum.error) {
+        return "Reintentar";
+      }
+      return "";
+    },
   },
   methods: {
     ...mapActions(FAVOURITE_CONTENT_STORE, {
@@ -242,7 +260,9 @@ export default {
 <style lang="scss">
 .movie-uploader-dialog {
   h2 {
-    color: $font-primary-color;
+    &__title {
+      color: $font-primary-color;
+    }
     font-weight: 700;
     font-size: 20px;
     line-height: 20px;
@@ -279,6 +299,10 @@ export default {
     }
   }
 
+  &__action {
+    cursor: pointer;
+  }
+
   .uploader-drop-zone {
     font-weight: 700;
     font-size: 16px;
@@ -303,6 +327,7 @@ export default {
 
   .v-card {
     .v-card__text {
+      color: white !important;
       font-weight: 400;
       font-size: 20px;
       line-height: 24px;
