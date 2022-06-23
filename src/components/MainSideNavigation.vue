@@ -21,7 +21,10 @@ export default {
   name: "MainSideNavigation",
   components: { Dropdown, PopularContent },
   data() {
-    const menuItems = [{ title: "Películas" }, { title: "Populares" }];
+    const menuItems = [
+      { title: "Populares" },
+      { title: "Mis Películas", navigate: "/favourites" },
+    ];
 
     return {
       menuItems,
@@ -30,8 +33,12 @@ export default {
   },
   computed: {
     ...mapGetters(POPULAR_CONTENT_STORE, { popular: GET_POPULAR }),
-    showing() {
-      return this.selectedItem;
+  },
+  watch: {
+    selectedItem({ navigate }) {
+      if (navigate) {
+        this.$router.push(navigate);
+      }
     },
   },
 };
