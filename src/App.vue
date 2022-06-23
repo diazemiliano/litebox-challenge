@@ -8,7 +8,19 @@
     <main-top-navigation />
     <movie-uploader-dialog />
     <v-main>
-      <router-view />
+      <template v-if="loading">
+        <v-row no-gutters align="center" justify="center" class="fill-height">
+          <v-progress-circular
+            :size="70"
+            :width="7"
+            color="#64eebc"
+            indeterminate
+          ></v-progress-circular>
+        </v-row>
+      </template>
+      <template v-else>
+        <router-view />
+      </template>
     </v-main>
   </v-app>
 </template>
@@ -36,6 +48,7 @@ export default {
   name: "App",
   components: { MovieUploaderDialog, MainNavigationDrawer, MainTopNavigation },
   computed: {
+    ...mapGetters({ loading: "getLoading" }),
     ...mapGetters(FEATURED_CONTENT_STORE, { featured: GET_FEATURED }),
     appStyles() {
       let backgroundImage = [];
@@ -71,20 +84,23 @@ export default {
     ...mapActions(FAVOURITE_CONTENT_STORE, {
       callGetFavourites: CALL_GET_FAVOURITES,
     }),
+    ...mapActions(["setLoading"]),
   },
   created() {
-    this.callGetFeatured().catch((e) => {
-      // Handle the Error at UI Here
-      console.log(e);
-    });
-    this.callGetPopular().catch((e) => {
-      // Handle the Error at UI Here
-      console.log(e);
-    });
-    this.callGetFavourites().catch((e) => {
-      // Handle the Error at UI Here
-      console.log(e);
-    });
+    this.setLoading(true);
+
+    Promise.all([
+      this.callGetFeatured(),
+      this.callGetPopular(),
+      this.callGetFavourites(),
+    ])
+      .catch((e) => {
+        // Handle the Error at UI Here
+        console.log(e);
+      })
+      .finally(() => {
+        this.setLoading(false);
+      });
   },
 };
 </script>
