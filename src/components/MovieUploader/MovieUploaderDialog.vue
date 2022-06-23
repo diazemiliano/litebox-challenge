@@ -178,6 +178,15 @@ export default {
     },
     closeDialogHandler() {
       this.show = false;
+      setTimeout(() => this.resetState(), 300);
+    },
+    resetState() {
+      this.status = statusEnum.empty;
+      this.progress = 0;
+      this.movie = {
+        title: "",
+        file: null,
+      };
     },
     handleUploadMovieClick() {
       if (this.status === this.$options.statusEnum.success) {
