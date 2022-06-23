@@ -44,10 +44,9 @@ const actions = {
       return Apis.FavouritesApi.postFile({
         file: favourite.file,
         progressCb,
+        errorCb: (error) => reject(error),
       })
-        .then((response) => {
-          const { ref } = response;
-          progressCb({ bytes: 75, total: favourite.file.size });
+        .then(({ ref }) => {
           return ApiConstructor.storage.getDownloadURL(ref).then((poster) =>
             Apis.FavouritesApi.postFavourite({
               title: favourite.title,

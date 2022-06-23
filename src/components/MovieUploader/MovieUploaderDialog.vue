@@ -17,6 +17,10 @@
           height="27"
           min-width="27"
           max-width="27"
+          :disabled="
+            status >= $options.statusEnum.uploading &&
+            status !== $options.statusEnum.success
+          "
           @click="closeDialogHandler"
         >
           <img width="16px" :src="require('@/assets/x-icon.svg')" />
@@ -25,7 +29,7 @@
 
       <v-card-text class="ma-0 px-5 pt-0">
         <template v-if="status < $options.statusEnum.uploading">
-          <h2 class="text-center mb-16">Agregar Película</h2>
+          <h2 class="text-center mb-10">Agregar Película</h2>
           <uploader-drop-zone
             @input="handleDropZoneInput"
             class="pa-10 text-center"
@@ -58,10 +62,17 @@
           "
         >
           <template v-if="status === $options.statusEnum.uploading">
-            <p>Cargando: {{ progress }}</p>
+            <p class="mt-16">
+              Cargando: <span class="font-weight-thin">{{ progress }}</span>
+            </p>
           </template>
           <template v-if="status === $options.statusEnum.error">
-            <p>¡ERROR! NO SE PUDO CARGAR LA PELÍCULA</p>
+            <p class="mt-16">
+              ¡ERROR!
+              <span class="font-weight-thin">
+                NO SE PUDO CARGAR LA PELÍCULA
+              </span>
+            </p>
           </template>
 
           <v-progress-linear
@@ -69,6 +80,7 @@
             height="10"
             :color="status < $options.statusEnum.error ? '#64EEBC' : '#FF0000'"
             background-color="#929292"
+            class="mb-12"
           />
         </template>
         <template v-else-if="status === $options.statusEnum.success">
@@ -78,7 +90,7 @@
           </div>
 
           <h2 class="mb-7 text-center">¡Felicitaciones!</h2>
-          <p class="mb-7 text-center">
+          <p class="mb-16 text-center">
             Liteflix The Movie fue correctamente subida.
           </p>
         </template>
@@ -88,17 +100,21 @@
         <v-text-field
           v-model="movie.title"
           :disabled="status > $options.statusEnum.selected"
+          hide-details
           placeholder="Título"
-          class="movie-uploader-dialog__title mx-5"
+          class="movie-uploader-dialog__title mx-5 mb-8 flex-grow-0"
         />
       </template>
-
-      <v-card-actions class="justify-center">
+      <v-card-actions class="justify-center justify-end flex-grow-0">
         <v-btn
           tile
           text
           :block="$vuetify.breakpoint.xsOnly"
-          :disabled="!isValid"
+          :disabled="
+            !isValid ||
+            (status >= $options.statusEnum.uploading &&
+              status !== $options.statusEnum.success)
+          "
           height="56"
           width="248"
           @click="handleUploadMovieClick"
@@ -140,7 +156,7 @@ export default {
     return {
       show: false,
       status: statusEnum.empty,
-      progress: 50,
+      progress: 0,
       movie: {
         title: "",
         file: null,
@@ -150,12 +166,7 @@ export default {
   statusEnum,
   computed: {
     isValid() {
-      return this.movie.title && this.movie.file;
-    },
-  },
-  watch: {
-    show(val) {
-      this.$emit("input", val);
+      return this.movie.title && !!this.movie.file;
     },
   },
   methods: {
@@ -281,11 +292,13 @@ export default {
     top: 2.5px;
   }
 
-  .v-card .v-card__text {
-    font-weight: 400;
-    font-size: 20px;
-    line-height: 24px;
-    letter-spacing: 4px;
+  .v-card {
+    .v-card__text {
+      font-weight: 400;
+      font-size: 20px;
+      line-height: 24px;
+      letter-spacing: 4px;
+    }
   }
 }
 </style>
