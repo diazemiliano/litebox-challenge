@@ -12,7 +12,14 @@
     :width="$vuetify.breakpoint.mdAndUp ? `700px` : `100%`"
   >
     <slot name="prepend">
-      <main-top-navigation :buttons="['close', 'notifications', 'user']" />
+      <main-top-navigation
+        :buttons="[
+          $vuetify.breakpoint.smAndDown ? 'logo' : null,
+          $vuetify.breakpoint.mdAndUp ? 'bell' : null,
+          'close',
+          'user',
+        ]"
+      />
     </slot>
     <v-list flat>
       <v-list-item-group :value="0" active-class="font-weight-medium">

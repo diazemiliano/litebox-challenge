@@ -48,9 +48,7 @@
       </div>
     </template>
 
-    <v-spacer
-      :class="buttons.includes('close') ? 'd-flex' : 'd-none d-md-flex'"
-    />
+    <v-spacer class="d-none d-md-flex" />
 
     <template v-if="buttons.includes('menu')">
       <v-btn
@@ -66,19 +64,20 @@
         <v-img :src="require('@/assets/app-menu-icon.svg')" />
       </v-btn>
     </template>
-
-    <v-btn
-      class="ml-6 d-none d-md-flex order-2"
-      :class="{ 'd-flex': getDrawer }"
-      text
-      color="white"
-      width="27"
-      height="27"
-      min-width="27"
-      max-width="27"
-    >
-      <v-img :src="require('@/assets/app-bell-icon.svg')" />
-    </v-btn>
+    <template v-if="buttons.includes('bell')">
+      <v-btn
+        class="ml-6 d-none d-md-flex order-2"
+        :class="{ 'd-flex': getDrawer }"
+        text
+        color="white"
+        width="27"
+        height="27"
+        min-width="27"
+        max-width="27"
+      >
+        <v-img :src="require('@/assets/app-bell-icon.svg')" />
+      </v-btn>
+    </template>
     <v-btn
       class="ml-6 order-3"
       text
@@ -107,7 +106,7 @@ export default {
   props: {
     buttons: {
       type: Array,
-      default: () => ["logo", "add", "menu", "notifications", "user"],
+      default: () => ["logo", "add", "menu", "bell", "notifications", "user"],
       validator: (value) => value.some((val) => value.includes(val)),
     },
   },
