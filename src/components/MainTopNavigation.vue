@@ -156,7 +156,7 @@ export default {
       color: $font-primary-color;
       cursor: pointer;
       &--light {
-        line-height: 31px;
+        line-height: 32px;
       }
     }
 
