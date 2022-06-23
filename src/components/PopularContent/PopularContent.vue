@@ -3,7 +3,7 @@
     <v-img
       :src="movie.posterUrl()"
       :lazy-src="movie.posterUrl({ width: 92 })"
-      class="popular-content-thumb rounded mb-4"
+      class="popular-content-thumb rounded"
       min-width="220"
       min-height="146"
       aspect-ratio="1.8"

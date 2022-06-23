@@ -3,7 +3,7 @@
     <v-img
       :src="movie.poster"
       :lazy-src="movie.poster"
-      class="popular-content-thumb rounded mb-4"
+      class="popular-content-thumb rounded"
       min-height="146"
       aspect-ratio="1.8"
     >
