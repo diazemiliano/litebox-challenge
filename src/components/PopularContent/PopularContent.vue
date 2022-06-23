@@ -25,7 +25,7 @@
                   :src="require('@/assets/play-circle-icon.svg')"
                 />
                 <h3 class="bottom-title">
-                  <span class="font-weight-thin">{{ movie.title }}</span>
+                  <span class="font-weight-regular">{{ movie.title }}</span>
                 </h3>
               </div>
             </template>
@@ -43,7 +43,7 @@
                     />
 
                     <h3 class="d-inline-flex">
-                      <span class="font-weight-thin ml-3">
+                      <span class="font-weight-regular ml-3">
                         {{ movie.title }}
                       </span>
                     </h3>

@@ -24,7 +24,7 @@
               />
 
               <h3 class="bottom-title">
-                <span class="font-weight-thin">{{ movie.title }}</span>
+                <span class="font-weight-regular">{{ movie.title }}</span>
               </h3>
             </div>
           </v-fade-transition>

@@ -9,7 +9,7 @@
         color="white"
         width="100%"
       >
-        <span class="font-weight-thin">Ver: </span>{{ props.value.title }}
+        Ver: <span class="font-weight-bold"> {{ props.value.title }}</span>
         <span class="ml-auto">
           <img
             width="12"

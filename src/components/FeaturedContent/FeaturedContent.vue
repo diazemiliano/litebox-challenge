@@ -2,8 +2,8 @@
   <v-row class="featured-content mb-16 text-center text-sm-left">
     <v-col cols="12">
       <h3 class="featured-content__sub pb-6">
-        <span class="font-weight-thin">Original de </span>
-        Lite<span class="font-weight-thin"> flix </span>
+        <span class="font-weight-regular">Original de </span>
+        Lite<span class="font-weight-regular"> flix </span>
       </h3>
       <h2 class="featured-content__title text-left font-weight-bold">
         {{ featured.title }}
