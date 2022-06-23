@@ -1,53 +1,54 @@
 <template>
-  <v-img
-    :src="movie.posterUrl()"
-    :lazy-src="movie.posterUrl({ width: 92 })"
-    class="popular-content-thumb rounded mb-4"
-    min-width="220"
-    min-height="146"
-    aspect-ratio="1.8"
-  >
-    <template v-slot:default>
-      <v-row
-        class="fill-height ma-0 text-center"
-        align="center"
-        justify="center"
-      >
-        <v-fade-transition>
-          <template>
+  <v-col sm="12" md="4" class="justify-center">
+    <v-img
+      :src="movie.poster"
+      :lazy-src="movie.poster"
+      class="popular-content-thumb rounded mb-4"
+      min-width="220"
+      min-height="146"
+      aspect-ratio="1.8"
+    >
+      <template v-slot:default>
+        <v-row
+          class="fill-height ma-0 text-center"
+          align="center"
+          justify="center"
+        >
+          <v-fade-transition>
             <div class="title-container d-flex align-center justify-center">
-              <img
+              <image-hover
                 width="40"
                 height="40"
                 :src="require('@/assets/play-circle-icon.svg')"
+                :src-hover="require('@/assets/play-circle-icon-hover.svg')"
               />
+
               <h3 class="bottom-title">
                 <span class="font-weight-thin">{{ movie.title }}</span>
               </h3>
             </div>
-          </template>
-        </v-fade-transition>
-      </v-row>
-    </template>
-    <template v-slot:placeholder>
-      <v-row class="fill-height ma-0" align="center" justify="center"></v-row>
-    </template>
-  </v-img>
+          </v-fade-transition>
+        </v-row>
+      </template>
+      <template v-slot:placeholder>
+        <v-row class="fill-height ma-0" align="center" justify="center"></v-row>
+      </template>
+    </v-img>
+  </v-col>
 </template>
 <script>
+import ImageHover from "@/components/ImageHover";
 import { BaseContentModel } from "@/components/FavouriteContent/FavouriteContentModel";
 
 export default {
-  name: "favourite-content",
+  name: "PopularContent",
+  components: { ImageHover },
   props: {
     /** @type {BaseContentModel} */
     movie: {
       validator: (value) => value instanceof BaseContentModel,
       required: true,
     },
-  },
-  mounted() {
-    console.log(this.movie);
   },
 };
 </script>

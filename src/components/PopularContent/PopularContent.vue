@@ -79,7 +79,7 @@ import ImageHover from "@/components/ImageHover";
 import { PopularContentModel } from "@/components/PopularContent/PopularContentModel";
 
 export default {
-  name: "popular-content",
+  name: "PopularContent",
   components: { ImageHover },
   props: {
     /** @type {PopularContentModel} */

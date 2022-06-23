@@ -27,6 +27,7 @@
         height="56"
         width="248"
         class="featured-content__button featured-content__button--transparent"
+        to="/favourites"
       >
         <v-img max-width="15" :src="require('@/assets/plus-icon.svg')" />
         <span>Mi Lista</span>
@@ -102,4 +103,3 @@ export default {
   }
 }
 </style>
-font-size: 18px; line-height: 22px; letter-spacing: 4px;

@@ -1,5 +1,6 @@
 import Apis from "@/api";
 import { ApiConstructor } from "@/api/FavouritesApi/constructor";
+import { BaseContentModel } from "@/components/FavouriteContent/FavouriteContentModel";
 
 export const FAVOURITE_CONTENT_STORE = "FavouriteContentStore";
 
@@ -27,7 +28,17 @@ const actions = {
       .then(({ docs }) => {
         const favourites = docs.map((doc) => ({ id: doc.id, ...doc.data() }));
 
-        commit(MUTATE_FAVOURITES, favourites);
+        const baseInstances = favourites.map((item) => {
+          const { id, title, poster } = item;
+
+          return new BaseContentModel({
+            id,
+            title,
+            poster,
+          });
+        });
+
+        commit(MUTATE_FAVOURITES, baseInstances);
         return Promise.resolve();
       })
       .catch((e) => {

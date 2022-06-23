@@ -16,7 +16,7 @@
     </slot>
     <v-list flat>
       <v-list-item-group :value="0" active-class="font-weight-medium">
-        <v-list-item>
+        <v-list-item to="/">
           <v-list-item-title>Inicio</v-list-item-title>
         </v-list-item>
 
@@ -36,7 +36,7 @@
           <v-list-item-title>Populares</v-list-item-title>
         </v-list-item>
 
-        <v-list-item>
+        <v-list-item to="/favourites">
           <v-list-item-title>Mis Peliculas</v-list-item-title>
         </v-list-item>
 

@@ -1,5 +1,10 @@
 <template>
-  <v-app-bar flat color="transparent" height="72" class="header-bar">
+  <v-app-bar
+    flat
+    color="transparent"
+    height="72"
+    class="header-bar flex-grow-0"
+  >
     <template v-if="buttons.includes('logo')">
       <div
         class="header-bar__logo d-flex align-start order-1 order-md-0 ma-auto ma-md-0"
