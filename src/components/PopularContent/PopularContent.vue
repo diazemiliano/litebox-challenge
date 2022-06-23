@@ -36,6 +36,8 @@
                 <v-row class="ma-3 text-left" align-content="end">
                   <div class="d-flex align-center pa-0 mb-6">
                     <image-hover
+                      width="24"
+                      height="24"
                       :src="require('@/assets/play-circle-icon.svg')"
                       :src-hover="
                         require('@/assets/play-circle-icon-hover.svg')

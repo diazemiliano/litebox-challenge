@@ -1,9 +1,8 @@
 <template functional>
   <img
-    v-bind="data.attrs"
     ref="image"
-    width="24"
-    height="24"
+    :width="props.width || null"
+    :height="props.height || null"
     :src="props.src"
     class="d-inline-flex"
     @mouseenter="$options.handleMouseEnter($event, props)"
@@ -21,6 +20,8 @@ export default {
     srcHover: {
       required: true,
     },
+    width: {},
+    height: {},
   },
 
   handleMouseEnter($e, props) {
