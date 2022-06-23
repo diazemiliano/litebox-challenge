@@ -1,9 +1,10 @@
 <template>
-  <v-col sm="12" md="4" class="justify-center">
+  <v-col sm="12" md="6" lg="4" class="justify-center">
     <v-img
       :src="movie.poster"
       :lazy-src="movie.poster"
       class="popular-content-thumb rounded"
+      min-width="220"
       min-height="146"
       aspect-ratio="1.8"
     >
