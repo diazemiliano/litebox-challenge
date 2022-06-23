@@ -11,6 +11,7 @@
     <v-card>
       <v-card-title class="justify-end">
         <v-btn
+          class="hidden-sm-and-down"
           text
           color="white"
           width="27"
@@ -89,7 +90,7 @@
           </p>
         </template>
         <template v-else-if="status === $options.statusEnum.success">
-          <div class="header-bar__logo text-center mb-16">
+          <div class="header-bar__logo text-center mb-16 hidden-sm-and-down">
             Lite
             <span class="header-bar__logo--light font-weight-thin">Flix</span>
           </div>
@@ -110,7 +111,7 @@
           class="movie-uploader-dialog__title mx-5 mb-8 flex-grow-0"
         />
       </template>
-      <v-card-actions class="justify-center justify-end flex-grow-0">
+      <v-card-actions class="justify-center justify-end flex-grow-0 flex-wrap">
         <v-btn
           tile
           text
@@ -132,6 +133,19 @@
             <span>Ir al Home</span>
           </template>
         </v-btn>
+        <template v-if="status !== $options.statusEnum.success">
+          <v-btn
+            tile
+            text
+            :block="$vuetify.breakpoint.xsOnly"
+            height="56"
+            width="248"
+            @click="closeDialogHandler"
+            class="movie-uploader-dialog__button mb-4 hidden-sm-and-up"
+          >
+            <span>Salir</span>
+          </v-btn>
+        </template>
       </v-card-actions>
     </v-card>
   </v-dialog>
@@ -319,6 +333,12 @@ export default {
 
   &__action {
     cursor: pointer;
+  }
+
+  &.v-dialog--fullscreen {
+    .v-card {
+      padding-top: 180px !important;
+    }
   }
 
   .uploader-drop-zone {

@@ -18,9 +18,11 @@ import {
   FEATURED_CONTENT_STORE,
   GET_FEATURED,
 } from "@/components/FeaturedContent/FeaturedContentStore";
+import MovieUploaderDialogEventsMixin from "@/components/MovieUploader/MovieUploaderDialogEventsMixin";
 
 export default {
   name: "HomeView",
+  mixins: [MovieUploaderDialogEventsMixin],
   components: {
     NineThreeLayout,
     MainSideNavigation,
@@ -28,6 +30,9 @@ export default {
   },
   computed: {
     ...mapGetters(FEATURED_CONTENT_STORE, { featured: GET_FEATURED }),
+  },
+  mounted() {
+    this.emitCloseMovieUploaderDialog();
   },
 };
 </script>

@@ -15,11 +15,16 @@ import {
   FAVOURITE_CONTENT_STORE,
   GET_FAVOURITES,
 } from "@/components/FavouriteContent/FavouriteContentStore";
+import MovieUploaderDialogEventsMixin from "@/components/MovieUploader/MovieUploaderDialogEventsMixin";
 export default {
   name: "FavouritesView",
+  mixins: [MovieUploaderDialogEventsMixin],
   components: { FavouriteContent, TwelveLayout },
   computed: {
     ...mapGetters(FAVOURITE_CONTENT_STORE, { favourites: GET_FAVOURITES }),
+  },
+  mounted() {
+    this.emitCloseMovieUploaderDialog();
   },
 };
 </script>

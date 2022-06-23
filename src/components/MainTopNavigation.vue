@@ -126,6 +126,7 @@ export default {
   &.break-point-sm,
   &.break-point-xs {
     .header-bar {
+      z-index: 300;
       padding-left: 40px;
       padding-right: 40px;
     }

@@ -1,7 +1,7 @@
 <template>
   <v-navigation-drawer
     v-model="navigation"
-    fixed
+    absolute
     temporary
     dark
     floating
@@ -108,6 +108,7 @@ export default {
   }
 
   .v-navigation-drawer {
+    z-index: 302;
     .v-list {
       padding-left: 30px;
 
