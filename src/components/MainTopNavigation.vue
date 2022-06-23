@@ -7,7 +7,7 @@
   >
     <template v-if="buttons.includes('logo')">
       <div
-        @click="$router.push('/')"
+        @click="$route.path !== '/' && $router.push('/')"
         class="header-bar__logo d-flex align-start order-1 order-md-0 ma-auto ma-md-0"
       >
         Lite

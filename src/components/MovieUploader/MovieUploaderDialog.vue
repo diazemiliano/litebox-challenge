@@ -180,7 +180,7 @@ export default {
         title: "",
         file: null,
       },
-      cancelToken: () => console.warn("cancelToken not set."),
+      cancelToken: () => {},
     };
   },
   statusEnum,
