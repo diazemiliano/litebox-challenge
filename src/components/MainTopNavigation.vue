@@ -17,7 +17,7 @@
 
     <template v-if="buttons.includes('close')">
       <v-btn
-        class="ml-0 ml-md-6 order-0"
+        class="ml-2 ml-md-8 order-0"
         text
         color="white"
         width="27"
